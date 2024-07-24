@@ -1,0 +1,23 @@
+{
+  "name": "nodebackend",
+  "version": "1.0.0",
+  "description": "A backend that provides abstraction for the other APIs made for the InsightWave",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node ./backend/src/server.js"
+  },
+  "keywords": [
+    "Backend",
+    "NODEJS",
+    "JS",
+    "MERN",
+    "Django"
+  ],
+  "author": "Pratham Kubetkar",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
