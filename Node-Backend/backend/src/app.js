@@ -10,7 +10,7 @@ app.use(express.static("public"));
 
 
 app.get('/',(req,res)=>{
-    res.status(200).send({message: "Welcome to InsightWave"});
+    res.status(200).send({message: "Welcome to InsightWave Node Backend"});
 });
 
 app.use('/api/v1/preprocess',preprocessRouter);
