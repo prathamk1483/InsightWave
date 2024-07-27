@@ -5,9 +5,11 @@ const overallResponse = async (requestTo,data,successMessage,failureMessage) =>{
     var pythonResponse,finalResponse;
     try{
         pythonResponse = await axiosReq(requestTo,data);
+        console.log("Sending request to Python");
         finalResponse =  new ApiResponse(200,pythonResponse,`${successMessage}`);
     }
     catch(error){
+        console.log("Failed to get data from python");
         pythonResponse = {
             "Error" : error
         };

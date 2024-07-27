@@ -3,5 +3,6 @@ from django.urls import path,include
 from .import views
 
 urlpatterns = [
-    path('nullvalues/',views.nullvalues,name="nullvalues") ,
+    path('getnullvalues/',views.nullvalues,name="nullvalues") ,
+    path('getnullvaluesbypercentage/',views.nullvaluesbypercentage,name="nullvaluesbypercentage") ,
 ]
