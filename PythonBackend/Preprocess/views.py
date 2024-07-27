@@ -13,6 +13,7 @@ def nullvalues(request):
         url=request.data["link"]
         data = pd.read_csv(url)
         response = data.isnull().sum().to_dict()
-
+        
         return Response(response)
+    
     return HttpResponse("<h1>Welcome to the InsightWave Django Backend<h1/>")

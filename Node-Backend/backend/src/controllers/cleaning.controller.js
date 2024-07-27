@@ -1,13 +1,25 @@
-import axios from "axios";
 import { asyncHandler } from "../utils/asynhandler.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { axiosReq } from "../utils/axiosReq.js";
+import overallResponse from "../utils/PythonCall.js";
+
 
 const getNullValues = asyncHandler(async(req,res)=>{
-    const data ={"link" : req.body.link};
+    const data ={
+        "link" : req.body.link
+    };
     const requestTo = "preprocess/nullvalues/";
-    const pythonResponse = await axiosReq(requestTo,data);
-    return res.status(201).json( new ApiResponse(200, pythonResponse, "Received Link Successfully"));
+    const successMessage = "Received null values successfully";
+    const failureMessage = "Failed to receive null values";
+    
+    const finalResponse = await overallResponse(requestTo,data,successMessage,failureMessage);
+    console.log("finalReponse by controller  "+finalResponse);
+    res.status(201).json(finalResponse);
 });
 
-export default getNullValues;
+const getNullValuesByPercentage = asyncHandler(async(req,res)=>{
+
+});
+
+export  {
+    getNullValues,
+    getNullValuesByPercentage
+};
