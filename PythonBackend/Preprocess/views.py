@@ -12,7 +12,7 @@ def nullvalues(request):
 
         return Response(response.to_dict())
 
-    return Response("Failed @nullvalues Django-restframework")
+    return Response("Failed @nullvaluesbypercentage by Django-restframework")
 
 @api_view(["POST"])
 def nullvaluesbypercentage(request):
@@ -22,4 +22,13 @@ def nullvaluesbypercentage(request):
 
         return Response(response.to_dict())
 
+    return Response("Failed @nullvaluesbypercentage by Django-restframework")
+
+@api_view(["POST"])
+def datadescription(request):
+    if "csv_data" in request.session:
+        data = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
+        response = data.describe()
+
+        return Response(response.to_dict())
     return Response("Failed @nullvaluesbypercentage by Django-restframework")

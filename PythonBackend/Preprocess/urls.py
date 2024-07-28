@@ -5,4 +5,5 @@ from .import views
 urlpatterns = [
     path('getnullvalues/',views.nullvalues,name="nullvalues") ,
     path('getnullvaluesbypercentage/',views.nullvaluesbypercentage,name="nullvaluesbypercentage") ,
+    path('getdescription/',views.datadescription,name="description") ,
 ]
