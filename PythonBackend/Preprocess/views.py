@@ -9,8 +9,11 @@ def nullvalues(request):
     if "csv_data" in request.session:
         data = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
         response = data.isnull().sum()
-
-        return Response(response.to_dict())
+        finalresponse = {
+            "processed" : response.to_dict(),
+            "columns" : request.session["data_columns"]
+        }
+        return Response(finalresponse)
 
     return Response("Failed @nullvaluesbypercentage by Django-restframework")
 
@@ -19,8 +22,11 @@ def nullvaluesbypercentage(request):
     if "csv_data" in request.session:
         data = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
         response = (data.isnull().sum()) / len(data) *100
-
-        return Response(response.to_dict())
+        finalresponse = {
+            "processed" : response.to_dict(),
+            "columns" : request.session["data_columns"]
+        }
+        return Response(finalresponse)
 
     return Response("Failed @nullvaluesbypercentage by Django-restframework")
 
@@ -29,6 +35,9 @@ def datadescription(request):
     if "csv_data" in request.session:
         data = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
         response = data.describe()
-
-        return Response(response.to_dict())
+        finalresponse = {
+            "processed" : response.to_dict(),
+            "columns" : request.session["data_columns"]
+        }
+        return Response(finalresponse)
     return Response("Failed @nullvaluesbypercentage by Django-restframework")

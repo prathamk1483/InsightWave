@@ -4,7 +4,7 @@ from django.utils.deprecation import MiddlewareMixin
 
 class CSVLoaderMiddleware(MiddlewareMixin):
     def process_request(self, request):
-        if 'preprocess/' in request.path and request.method == 'POST':
+        if 'visualize/' in request.path and request.method == 'POST':
             body = request.body.decode('utf-8')
             data = json.loads(body)
             URL = data.get('link')

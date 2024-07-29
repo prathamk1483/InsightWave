@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-e4tx1$28))rw0ejd9xyuqopco@*@ihpx5g5kg3_hu_r0%lc4oe'
+
+cloudinary.config(
+  cloud_name = 'dgkh7jgzl', 
+  api_key = '597456717227752', 
+  api_secret = 'Y_KKg0jXyuRRCQDraokzkhCDjdo' 
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Preprocess.apps.PreprocessConfig',
+    'Visualize.apps.VisualizeConfig',
     'rest_framework',
 ]
 
@@ -50,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'Preprocess.middleware.CSVLoaderMiddleware',
+    'Visualize.middleware.CSVLoaderMiddleware',
 ]
 
 ROOT_URLCONF = 'PythonBackend.urls'
