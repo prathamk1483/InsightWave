@@ -1,13 +1,23 @@
 from rest_framework.response import Response
+from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from io import StringIO,BytesIO
 import pandas as pd
 import matplotlib.pyplot as plt
 import cloudinary.uploader
-import base64
+from io import StringIO
 import json
+import matplotlib
+matplotlib.use('Agg')
 
-# Create your views here.
+@api_view(["POST"])
+def index(request):
+    if request.method == "POST":
+        data = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
+        print(data.head())
+        return Response("On the Visualize.view.index file , the above is the data received")
+    return HttpResponse("Ran the index file")
+
 
 @api_view(["POST"])
 def histogram(request):

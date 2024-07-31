@@ -1,5 +1,6 @@
 import express from "express";
 import preprocessRouter from "./routes/preprocess.routes.js";
+import visualizeRouter from "./routes/visualize.routes.js";
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.get('/',(req,res)=>{
 });
 
 app.use('/api/v1/preprocess',preprocessRouter);
+app.use('/api/v1/visualize',visualizeRouter);
 
 export default app;
