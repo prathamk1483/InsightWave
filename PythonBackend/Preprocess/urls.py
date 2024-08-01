@@ -7,4 +7,7 @@ urlpatterns = [
     path('getnullvaluesbypercentage/',views.nullvaluesbypercentage,name="nullvaluesbypercentage") ,
     path('getdescription/',views.datadescription,name="description") ,
     path('dropcolumn/',views.dropcol,name="dropcolumn") ,
+    path('fillmissingvalues/', views.fillmissingvalues, name='fillmissingvalues'),
+    path('onehotencode/', views.onehotencode, name='onehotencode'),
+    path('scalefeatures/', views.scale_features, name='scale_features'),
 ]
