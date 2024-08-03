@@ -8,9 +8,13 @@ import cloudinary.uploader
 from io import StringIO
 import json
 import matplotlib
+import requests
+from PIL import Image
 import seaborn as sns
+import google.generativeai as genai
 matplotlib.use('Agg')
-
+my_api_key= "AIzaSyDOs2aSdgZkypnyggSwVwXTaMfc7Vc2ABg"
+genai.configure(api_key=my_api_key)
 
 @api_view(["POST"])
 def index(request):
@@ -39,23 +43,22 @@ def histogram(request):
         plt.close()
         buffer.seek(0)
 
-        response = cloudinary.uploader.upload(buffer, folder="histograms/")
-        
-        response = response.get('secure_url')
+        image_url = cloudinary.uploader.upload(buffer, folder="histograms/")
 
-        finalresponse = {
-            "processed" : response,
-            "cols" : cols,
+        url = image_url.get('secure_url')
+
+        description = GenerateVisualizationDescription(url)
+
+        final_response = {
+            "url": url,
+            "cols": cols,
+            "generated_description": description
         }
 
-        return Response(finalresponse)
+        return Response(final_response)
 
 
     return Response({"message":"Getting the histogram of the image"})
-
-
-
-'''             !!!!!!!!!!!!                        THE BELOW CODE IS AI GENERATED                    '''
 
 
 @api_view(["POST"])
@@ -74,7 +77,12 @@ def correlation_heatmap(request):
         response = cloudinary.uploader.upload(buffer, folder="heatmaps/")
         url = response['secure_url']
 
-        return Response({"url": url})
+        description = GenerateVisualizationDescription(url)
+
+        return Response({
+            "url": url,
+            "generated_description": description
+        })
 
     return Response("Failed to generate heatmap")
 
@@ -95,7 +103,12 @@ def pairplot(request):
         response = cloudinary.uploader.upload(buffer, folder="Pairplots/")
         url = response['secure_url']
 
-        return Response({"url": url})
+        description = GenerateVisualizationDescription(url)
+        
+        return Response({
+            "url": url,
+            "generated_description": description
+        })
 
     return Response("Failed to generate pairplot")
 
@@ -120,7 +133,12 @@ def boxplot(request):
         response = cloudinary.uploader.upload(buffer, folder="BoxPlots/")
         url = response['secure_url']
 
-        return Response({"url": url})
+        description = GenerateVisualizationDescription(url)
+        
+        return Response({
+            "url": url,
+            "generated_description": description
+        })
 
     return Response("Failed to generate boxplot")
 
@@ -149,6 +167,32 @@ def scatterplot(request):
         response = cloudinary.uploader.upload(buffer, folder="ScatterPlot/")
         url = response['secure_url']
 
-        return Response({"url": url})
+        description = GenerateVisualizationDescription(url)
+        
+        return Response({
+            "url": url,
+            "generated_description": description
+        })
 
     return Response("Failed to generate scatterplot")
+
+
+def GenerateVisualizationDescription(image_url):
+    response = requests.get(image_url)
+    img = Image.open(BytesIO(response.content))
+
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    img_bytes = buffered.getvalue()
+
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    contents = [
+        {"text": "Draw important insights from this visualization of a dataset ,act like you know about this dataset"},
+        {
+            "data": img_bytes, 
+            "mime_type": "image/png"
+        }
+    ]
+    response = model.generate_content(contents)
+
+    return response.text

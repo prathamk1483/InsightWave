@@ -10,4 +10,5 @@ urlpatterns = [
     path('fillmissingvalues/', views.fillmissingvalues, name='fillmissingvalues'),
     path('onehotencode/', views.onehotencode, name='onehotencode'),
     path('scalefeatures/', views.scale_features, name='scale_features'),
+    path('download/', views.download_processed_csv, name='download_processed_csv'),
 ]

@@ -4,6 +4,8 @@ import pandas as pd
 import json
 from io import StringIO
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
+from django.http import JsonResponse
+import cloudinary.uploader
 
 @api_view(["POST"])
 def nullvalues(request):
@@ -150,3 +152,23 @@ def scale_features(request):
         return Response({"Message":f"Scaled the {columns} using {method} successfully"})
     
     return Response({"Message":"Failed while scaling features"})
+
+
+@api_view(["POST"])
+def download_processed_csv(request):
+    if "csv_data" in request.session:
+        df = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
+        
+        csv_buffer = StringIO()
+        df.to_csv(csv_buffer, index=False)
+        csv_buffer.seek(0)
+        
+        response = cloudinary.uploader.upload_large(csv_buffer, resource_type="raw", format="csv")
+        csv_url = response['url'].replace('/upload/', '/upload/fl_attachment/')
+        
+        return Response({
+            "url": csv_url, 
+            "Message": "CSV uploaded successfully"
+        })
+    
+    return Response({"Message": "Failed to upload CSV"})
