@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'Preprocess.middleware.CSVLoaderMiddleware',
     'Visualize.middleware.CSVLoaderMiddleware',
+    'Report.middleware.CSVLoaderMiddleware',
 ]
 
 ROOT_URLCONF = 'PythonBackend.urls'

@@ -12,6 +12,7 @@ import requests
 from PIL import Image
 import seaborn as sns
 import google.generativeai as genai
+
 matplotlib.use('Agg')
 my_api_key= "AIzaSyDOs2aSdgZkypnyggSwVwXTaMfc7Vc2ABg"
 genai.configure(api_key=my_api_key)
