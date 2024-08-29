@@ -12,8 +12,10 @@ def nullvalues(request):
     if "csv_data" in request.session:
         data = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
         response = data.isnull().sum()
+        # print("This is data dot info :",data.info().to_dict())
         finalresponse = {
-            "Dataset" : response.to_dict(),
+            "Describe" : data.describe(),
+            "Response" : response.to_dict(),
             "Columns" : request.session["data_columns"],
             "Message" : "Success"
         }
@@ -27,7 +29,8 @@ def nullvaluesbypercentage(request):
         data = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
         response = (data.isnull().sum()) / len(data) *100
         finalresponse = {
-            "Drocessed" : response.to_dict(),
+            "Describe" : response.describe(),
+            "Response" : response.to_dict(),
             "Columns" : request.session["data_columns"],
             "Message" : "Success"
         }
@@ -41,7 +44,8 @@ def datadescription(request):
         data = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
         response = data.describe()
         finalresponse = {
-            "processed" : response.to_dict(),
+            "Describe" : response,
+            "Response" : None,
             "Columns" : request.session["data_columns"],
             "Message" : "Success"
         }
@@ -54,9 +58,7 @@ def dropcol(request):
         body = request.body.decode('utf-8')
         data = json.loads(body)
         cols = data.get('cols')
-
         df = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
-
         if cols:
             try:
                 for i in cols:
@@ -66,8 +68,14 @@ def dropcol(request):
             except:
                 return Response({"Message":"Maybe Some columns were missing"})
 
-        print(df.head())        
-        return Response({"Message":"Dropped given columns successfully"})
+        response = data.describe()
+        finalresponse = {
+            "Describe" : response,
+            "Repsonse" : None,
+            "Columns" : request.session["data_columns"],
+            "Message" : "Dropped the given columns successfully"
+        }    
+        return Response(finalresponse)
     
     return Response({"Message":"Failed while dropping columns from the dataset"})
 
@@ -101,7 +109,13 @@ def fillmissingvalues(request):
             df[columns] = df[columns].fillna(method='bfill')
         
         request.session["csv_data"] = df.to_json(orient='split')
-        return Response("Filled missing values successfully")
+        finalresponse = {
+            "Describe" : df.describe(),
+            "Response" : None,
+            "Columns" : request.session["data_columns"],
+            "Message" : "Filled the given columns with given values successfully"
+        }    
+        return Response(finalresponse)
     
     return Response("Failed while filling missing values")
 
@@ -119,7 +133,13 @@ def onehotencode(request):
             df = pd.get_dummies(df, columns=columns)
         
         request.session["csv_data"] = df.to_json(orient='split')
-        return Response("One-hot encoded columns successfully")
+        finalresponse = {
+            "Describe" : df.describe(),
+            "Reponse" : None,
+            "Columns" : request.session["data_columns"],
+            "Message" : "Successfully One hot Encoded the values"
+        }    
+        return Response(finalresponse)
     
     return Response("Failed while one-hot encoding columns")
 
@@ -149,7 +169,13 @@ def scale_features(request):
             df[columns] = scaler.fit_transform(df[columns])
         
         request.session["csv_data"] = df.to_json(orient='split')
-        return Response({"Message":f"Scaled the {columns} using {method} successfully"})
+        finalresponse = {
+            "Describe" : df.describe(),
+            "Response" : None,
+            "Columns" : request.session["data_columns"],
+            "Message" : "Successfully One hot Encoded the values"
+        }    
+        return Response(finalresponse)
     
     return Response({"Message":"Failed while scaling features"})
 
