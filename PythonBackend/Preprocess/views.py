@@ -59,16 +59,21 @@ def dropcol(request):
         data = json.loads(body)
         cols = data.get('cols')
         df = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
+        # print(df)
         if cols:
             try:
-                for i in cols:
-                    df.drop(columns=list(i), axis=1, inplace=True)
-                    request.session["csv_data"] = df.to_json(orient='split')
+                
+                df.drop(columns=list(cols), axis=1, inplace=True)
+                request.session["csv_data"] = df.to_json(orient='split')
+                request.session['data_columns'] = list(df.columns)
+                request.session.modified = True
+                print("###########################\n",df.to_json(orient='split'))
+                print("###########################\n",request.session["data_columns"])
 
             except:
                 return Response({"Message":"Maybe Some columns were missing"})
 
-        response = data.describe()
+        response = df.describe()
         finalresponse = {
             "Describe" : response,
             "Repsonse" : None,
