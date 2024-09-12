@@ -29,7 +29,7 @@ def nullvaluesbypercentage(request):
         data = pd.DataFrame(pd.read_json(StringIO(request.session["csv_data"]), orient='split'))
         response = (data.isnull().sum()) / len(data) *100
         finalresponse = {
-            "Describe" : response.describe(),
+            "Describe" : data.describe(),
             "Response" : response.to_dict(),
             "Columns" : request.session["data_columns"],
             "Message" : "Success"
