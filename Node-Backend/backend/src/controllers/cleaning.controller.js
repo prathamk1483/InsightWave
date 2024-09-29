@@ -100,6 +100,21 @@ const ScaleFeatures = asyncHandler(async(req,res)=>{
 });
 
 
+const DownloadCSV = asyncHandler(async(req,res)=>{
+    const data ={
+        "link" : req.body.link,
+        "method":req.body.method,
+        "cols" : req.body.cols
+    };
+    const requestTo = "preprocess/download/";
+    const successMessage = "Downloaded the file Successfully";
+    const failureMessage = "Failed to download the file";
+    
+    const finalResponse = await overallResponse(requestTo,data,successMessage,failureMessage);
+    res.status(201).json(finalResponse);
+});
+
+
 
 export  {
     getNullValues,
@@ -109,4 +124,5 @@ export  {
     OneHotEncode,
     ScaleFeatures,
     FillMissingValues,
+    DownloadCSV,
 };

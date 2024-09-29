@@ -6,7 +6,8 @@ import {
     DropColumns,
     FillMissingValues,
     OneHotEncode,
-    ScaleFeatures
+    ScaleFeatures,
+    DownloadCSV
 } from "../controllers/cleaning.controller.js";
 
 
@@ -20,5 +21,6 @@ router.route("/dropcolumn").post(DropColumns);
 router.route("/fillmissingvalues").post(FillMissingValues);
 router.route("/onehotencode").post(OneHotEncode);
 router.route("/scale_features").post(ScaleFeatures);
+router.route("/download").post(DownloadCSV);
 
 export default router;
